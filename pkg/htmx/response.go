@@ -1,4 +1,4 @@
-package hx
+package htmx
 
 const (
 	ResponseHeaderLocation           = "HX-Location"

@@ -1,4 +1,4 @@
-package hx
+package htmx
 
 const (
 	// ClassAdded Applied to a new piece of content before it is swapped, removed after it is settled.
