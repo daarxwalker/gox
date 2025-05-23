@@ -37,6 +37,7 @@ GOX offers an innovative approach to building web user interfaces, fully harness
 * **Functional Approach:** The use of functions for defining HTML elements and attributes is elegant and adheres to Go idioms. This keeps your code consistent and well-structured.
 * **Raw Element:** For situations where you need to embed custom, unaltered HTML, CSS, or JavaScript, GOX provides a special Raw element. This ensures maximum flexibility.
 * **Built-in Directives (If, Range):** GOX includes useful tools for conditional rendering and iterations directly within your Go code. This reduces the need for boilerplate code and simplifies dynamic content generation.
+* **Extensible Plugin System:** GOX features a simple yet powerful plugin system that allows you to easily integrate custom Go structs directly into your HTML rendering flow, enhancing flexibility and reusability.
 * **Seamless Interactivity:** GOX provides dedicated helper functions and utilities for lightweight JavaScript libraries like HTMX and Alpine.js (github.com/daarxwalker/gox/pkg/htmx and github.com/daarxwalker/gox/pkg/alpine). This allows you to build dynamic and interactive UIs directly from your Go code, significantly reducing the need for complex frontend tooling.
 
 <br>
