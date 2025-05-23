@@ -35,6 +35,13 @@ func Page() string {
 
 <br>
 
+## Installation
+```bash
+go get github.com/creamsensation/gox
+```
+
+<br>
+
 ## Features
 - [Elements](#elements)
 - [Attributes](#attributes)
@@ -48,6 +55,8 @@ func Page() string {
 - [Factories](#factories)
 - [Plugins](#plugins)
 - [Components](#components)
+- [Interactivity](#interactivity)
+- [FAQ](#faq)
 
 <br>
 
@@ -73,11 +82,11 @@ Library should contains most attributes.<br>
 ```go
 Button(
   Type("submit"),
-  CustomData("track", "submit-button"),
+  Data(Name("track"), Text("submit-button")),
 )
 
 // data-*
-CustomData("*", "...")
+Data(Name("*"), Text("..."))
 ```
 
 <br>
@@ -88,7 +97,7 @@ All shared nodes have default node type, which can be modified with modifier nod
 Because of sharing, you need to use node for content, instead of writing simple string argument.<br>
 Shared nodes are: cite, data, form, label, slot, span, style, title.<br>
 ```go
-Label(Text("E-mail"))
+Label(For("email"), Text("E-mail"))
 Style(Element(), Raw("body{background:red;}"))
 ```
 
@@ -212,11 +221,27 @@ func UiButton(content string) Node {
   return Button(
     Class("bg-blue-400", "text-white", "rounded"),
     Type("button"),
-    CustomData("test", "test-id"),
+    Data(Name("test"), Text("test-id")),
     Text(content),
   )
 }
 ```
+
+<br>
+
+### Interactivity
+
+While GOX excels at generating reusable HTML in Go, it's also designed to empower you to build **dynamic and interactive user interfaces without the complexity of traditional JavaScript frameworks.**
+
+We provide dedicated packages with helper functions and utilities for seamless integration with lightweight frontend libraries:
+
+* **HTMX:** Easily add dynamic updates, AJAX requests, and interactive behaviors directly from your Go code using HTMX attributes. No need for custom JavaScript. ``github.com/daarxwalker/gox/pkg/htmx``
+* **Alpine.js:** Manage local component state, event handling, and conditional rendering with minimal JavaScript, all expressed naturally within your GOX structure. ``github.com/daarxwalker/gox/pkg/alpine``
+
+These integrations mean you can manage your backend, view layer, and much of your frontend interactivity all within the Go ecosystem, streamlining development and reducing context switching.
+
+**Future Plans:** We're continuously working to enhance this ecosystem. **Support for Datastar is also planned** to further expand your options for building reactive UIs with minimal external JavaScript.
+
 <br>
 
 ## FAQ
