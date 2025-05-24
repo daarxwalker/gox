@@ -53,3 +53,7 @@ func If(condition bool, nodes ...Node) Node {
 		attributes: attributes,
 	}
 }
+
+func Zone(fn func() Node) Node {
+	return fn()
+}
