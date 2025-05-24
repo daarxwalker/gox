@@ -3,7 +3,7 @@
 ```go
 package app
 
-import . "github.com/creamsensation/gox"
+import . "github.com/daarxwalker/gox"
 
 func Page() string {
     return Render(
@@ -48,7 +48,7 @@ GOX offers an innovative approach to building web user interfaces, fully harness
 
 ## Installation
 ```bash
-go get github.com/creamsensation/gox
+go get github.com/daarxwalker/gox
 ```
 
 <br>
