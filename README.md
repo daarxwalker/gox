@@ -38,7 +38,7 @@ GOX offers an innovative approach to building web user interfaces, fully harness
 * **Raw Element:** For situations where you need to embed custom, unaltered HTML, CSS, or JavaScript, GOX provides a special Raw element. This ensures maximum flexibility.
 * **Built-in Directives (If, Range):** GOX includes useful tools for conditional rendering and iterations directly within your Go code. This reduces the need for boilerplate code and simplifies dynamic content generation.
 * **Extensible Plugin System:** GOX features a simple yet powerful plugin system that allows you to easily integrate custom Go structs directly into your HTML rendering flow, enhancing flexibility and reusability.
-* **Seamless Interactivity:** GOX provides dedicated helper functions and utilities for lightweight JavaScript libraries like HTMX and Alpine.js (github.com/daarxwalker/gox/pkg/htmx and github.com/daarxwalker/gox/pkg/alpine). This allows you to build dynamic and interactive UIs directly from your Go code, significantly reducing the need for complex frontend tooling.
+* **Seamless Interactivity:** GOX provides dedicated helper functions and utilities for lightweight JavaScript libraries like HTMX, Alpine.js, Datastar (github.com/daarxwalker/gox/pkg/htmx, github.com/daarxwalker/gox/pkg/alpine, github.com/daarxwalker/gox/pkg/datastar). This allows you to build dynamic and interactive UIs directly from your Go code, significantly reducing the need for complex frontend tooling.
 
 <br>
 
@@ -248,10 +248,11 @@ We provide dedicated packages with helper functions and utilities for seamless i
 
 * **HTMX:** Easily add dynamic updates, AJAX requests, and interactive behaviors directly from your Go code using HTMX attributes. No need for custom JavaScript. ``github.com/daarxwalker/gox/pkg/htmx``
 * **Alpine.js:** Manage local component state, event handling, and conditional rendering with minimal JavaScript, all expressed naturally within your GOX structure. ``github.com/daarxwalker/gox/pkg/alpine``
+* * **Datastar:** Get the best of both worlds for dynamic UIs, managing state and triggering actions directly within your GOX strucuture. ``github.com/daarxwalker/gox/pkg/datastar``
 
 These integrations mean you can manage your backend, view layer, and much of your frontend interactivity all within the Go ecosystem, streamlining development and reducing context switching.
 
-**Future Plans:** We're continuously working to enhance this ecosystem. **Support for Datastar is also planned** to further expand your options for building reactive UIs with minimal external JavaScript.
+**Future Plans:** We're continuously working to enhance this ecosystem and expand your options for building reactive UIs with minimal external JavaScript.
 
 <br>
 
@@ -259,5 +260,3 @@ These integrations mean you can manage your backend, view layer, and much of you
 **Why did I create the library?** <br>
 > I was tired of JS / TS ecosystem, so much bloat and I wanted something simple, yet powerful, like Go, for frontend.
 
-**What will be next steps?** <br>
-> I want to create the whole ecosystem, which will use GOX as primary view system
