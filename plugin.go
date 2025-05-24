@@ -34,7 +34,7 @@ func (c CLSX) String() string {
 		case fmt.Stringer:
 			result = append(result, v.String())
 		default:
-			result = append(result, fmt.Sprintf("%v", v))
+			result = append(result, fmt.Sprint(v))
 		}
 	}
 	return strings.Join(result, " ")

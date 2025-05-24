@@ -1,8 +1,8 @@
 package gox
 
 import (
-	"bytes"
 	"fmt"
+	"strings"
 )
 
 const (
@@ -30,15 +30,16 @@ func ClipPath(nodes ...Node) Node {
 }
 
 func Data(nodes ...Node) Node {
-	tag := bytes.NewBufferString(sharedData)
+	builder := new(strings.Builder)
+	builder.WriteString(sharedData)
 	nameNode := findNodeWithName(attributeName, nodes...)
 	name := fmt.Sprint(nameNode.value)
 	if nameNode.value != nil && len(name) > 0 {
-		tag.WriteString("-")
-		tag.WriteString(name)
+		builder.WriteString("-")
+		builder.WriteString(name)
 	}
 	nodes = removeNodesWithName(attributeName, nodes...)
-	return createShared(tag.String(), nodeAttribute, nodes...)
+	return createShared(builder.String(), nodeAttribute, nodes...)
 }
 
 func Filter(nodes ...Node) Node {

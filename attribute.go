@@ -3,7 +3,7 @@ package gox
 import (
 	"fmt"
 	"strings"
-
+	
 	"golang.org/x/exp/constraints"
 )
 
@@ -202,7 +202,7 @@ func Class(value any) Node {
 	case fmt.Stringer:
 		return createAttribute(attributeClass, v.String())
 	}
-	return createAttribute(attributeClass, fmt.Sprintf("%v", value))
+	return createAttribute(attributeClass, fmt.Sprint(value))
 }
 
 func Cols(values ...int) Node {

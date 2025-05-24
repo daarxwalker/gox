@@ -1,8 +1,8 @@
 package gox
 
 import (
-	"bytes"
 	"fmt"
+	"html"
 	"slices"
 	"strings"
 	"sync"
@@ -36,47 +36,43 @@ func (n nodeRenderer) render() string {
 }
 
 func (n nodeRenderer) renderElement() string {
-	writer := bytes.NewBufferString("")
-	writer.WriteString("<")
-	writer.WriteString(n.name)
+	builder := new(strings.Builder)
+	builder.WriteString("<")
+	builder.WriteString(n.name)
 	isVoid := slices.Contains(voidElements, n.name)
 	if len(n.attributes) > 0 {
-		writer.WriteString(" ")
-		writer.WriteString(n.renderAttributes())
+		builder.WriteString(" ")
+		builder.WriteString(n.renderAttributes())
 	}
 	if isVoid {
-		writer.WriteString(" />")
+		builder.WriteString(" />")
 	}
 	if !isVoid {
-		writer.WriteString(">")
+		builder.WriteString(">")
 		if len(n.children) > 0 {
-			writer.WriteString(n.renderChildren())
+			builder.WriteString(n.renderChildren())
 		}
-		writer.WriteString("</")
-		writer.WriteString(n.name)
-		writer.WriteString(">")
+		builder.WriteString("</")
+		builder.WriteString(n.name)
+		builder.WriteString(">")
 	}
-	return writer.String()
+	return builder.String()
 }
 
 func (n nodeRenderer) renderAttribute() string {
 	if n.value == nil {
 		return n.name
 	}
-	writer := bytes.NewBufferString("")
+	builder := new(strings.Builder)
 	value := fmt.Sprint(n.value)
 	if strings.HasPrefix(value, openBracket) && strings.HasSuffix(value, closeBracket) {
-		writer.WriteString(n.name)
-		writer.WriteString(`='`)
-		writer.WriteString(value)
-		writer.WriteString(`'`)
-		return writer.String()
+		value = strings.ReplaceAll(value, `"`, `'`)
 	}
-	writer.WriteString(n.name)
-	writer.WriteString(`="`)
-	writer.WriteString(value)
-	writer.WriteString(`"`)
-	return writer.String()
+	builder.WriteString(n.name)
+	builder.WriteString(`="`)
+	builder.WriteString(value)
+	builder.WriteString(`"`)
+	return builder.String()
 }
 
 func (n nodeRenderer) renderAttributes() string {
@@ -119,7 +115,7 @@ func (n nodeRenderer) renderChildren() string {
 }
 
 func (n nodeRenderer) renderText() string {
-	return fmt.Sprint(n.value)
+	return html.EscapeString(fmt.Sprint(n.value))
 }
 
 func (n nodeRenderer) renderRaw() string {
