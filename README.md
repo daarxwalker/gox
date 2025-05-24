@@ -248,7 +248,7 @@ We provide dedicated packages with helper functions and utilities for seamless i
 
 * **HTMX:** Easily add dynamic updates, AJAX requests, and interactive behaviors directly from your Go code using HTMX attributes. No need for custom JavaScript. ``github.com/daarxwalker/gox/pkg/htmx``
 * **Alpine.js:** Manage local component state, event handling, and conditional rendering with minimal JavaScript, all expressed naturally within your GOX structure. ``github.com/daarxwalker/gox/pkg/alpine``
-* * **Datastar:** Get the best of both worlds for dynamic UIs, managing state and triggering actions directly within your GOX strucuture. ``github.com/daarxwalker/gox/pkg/datastar``
+* **Datastar:** Get the best of both worlds for dynamic UIs, managing state and triggering actions directly within your GOX strucuture. ``github.com/daarxwalker/gox/pkg/datastar``
 
 These integrations mean you can manage your backend, view layer, and much of your frontend interactivity all within the Go ecosystem, streamlining development and reducing context switching.
 
