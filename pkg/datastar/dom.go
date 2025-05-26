@@ -39,6 +39,10 @@ func Class(name string, value any, modifiers ...Modifier) gox.Node {
 	return gox.CreateAttribute[string](attributeName)(fmt.Sprint(value))
 }
 
+func Hidden() gox.Node {
+	return gox.Style(gox.Raw(`display: none;`))
+}
+
 func On(name string, value string, modifiers ...Modifier) gox.Node {
 	builder := new(strings.Builder)
 	builder.WriteString("data-on-")
