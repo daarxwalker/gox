@@ -4,17 +4,17 @@ import "encoding/json"
 
 type Map map[string]any
 
-func (m Map) Bytes() ([]byte, error) {
+func (m Map) Bytes() []byte {
 	bytes, err := json.Marshal(m)
 	if err != nil {
-		return []byte{}, err
+		return []byte{}
 	}
-	return bytes, nil
+	return bytes
 }
 
 func (m Map) String() string {
-	bytes, err := m.Bytes()
-	if err != nil {
+	bytes := m.Bytes()
+	if len(bytes) == 0 {
 		return "{}"
 	}
 	return string(bytes)
