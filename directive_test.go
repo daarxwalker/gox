@@ -3,7 +3,7 @@ package gox
 import (
 	"fmt"
 	"testing"
-	
+
 	"github.com/stretchr/testify/assert"
 )
 
@@ -31,6 +31,29 @@ func TestDirectiveIf(t *testing.T) {
 			)
 			notPassed := Body(
 				If(false, Div(Text("not passed"))),
+			)
+			assert.Equal(t, "<body><div>passed</div></body>", Render(passed), "should render div with text")
+			assert.Equal(t, "<body></body>", Render(notPassed), "should not render div with text: not passed")
+		},
+	)
+}
+
+func TestDirectiveIfZone(t *testing.T) {
+	t.Run(
+		"if zone", func(t *testing.T) {
+			passed := Body(
+				IfZone(
+					true, func() Node {
+						return Div(Text("passed"))
+					},
+				),
+			)
+			notPassed := Body(
+				IfZone(
+					false, func() Node {
+						return Div(Text("not passed"))
+					},
+				),
 			)
 			assert.Equal(t, "<body><div>passed</div></body>", Render(passed), "should render div with text")
 			assert.Equal(t, "<body></body>", Render(notPassed), "should not render div with text: not passed")

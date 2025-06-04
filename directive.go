@@ -54,6 +54,15 @@ func If(condition bool, nodes ...Node) Node {
 	}
 }
 
+func IfZone(condition bool, fn func() Node) Node {
+	if !condition {
+		return node{
+			nodeType: nodeFragment,
+		}
+	}
+	return fn()
+}
+
 func Zone(fn func() Node) Node {
 	return fn()
 }
