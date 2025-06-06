@@ -36,4 +36,9 @@ func TestAttribute(t *testing.T) {
 			assert.Equal(t, `selected="false"`, Render(Selected(false)))
 		},
 	)
+	t.Run(
+		"render on event", func(t *testing.T) {
+			assert.Equal(t, `onclick="test.showModal()"`, Render(On("click", "test.showModal()")))
+		},
+	)
 }

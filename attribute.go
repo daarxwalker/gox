@@ -3,7 +3,7 @@ package gox
 import (
 	"fmt"
 	"strings"
-	
+
 	"golang.org/x/exp/constraints"
 )
 
@@ -85,6 +85,7 @@ const (
 	attributeNonce           = "nonce"
 	attributeNoValidate      = "novalidate"
 	attributeOpen            = "open"
+	attributeOn              = "on"
 	attributeOptimum         = "optimum"
 	attributePing            = "ping"
 	attributePlaceholder     = "placeholder"
@@ -431,6 +432,10 @@ func Nonce(values ...string) Node {
 
 func NoValidate(values ...bool) Node {
 	return createAttribute(attributeNoValidate, values...)
+}
+
+func On(event string, values ...string) Node {
+	return createAttribute(attributeOn+event, values...)
 }
 
 func Open(values ...bool) Node {
