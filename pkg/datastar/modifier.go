@@ -28,6 +28,10 @@ func WithDebounce(values ...string) Modifier {
 	return CreateModifier("__debounce", values)
 }
 
+func WithDelay(values ...string) Modifier {
+	return CreateModifier("__delay", values)
+}
+
 func WithDuration(values ...string) Modifier {
 	return CreateModifier("__duration", values)
 }
