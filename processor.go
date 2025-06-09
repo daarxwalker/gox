@@ -1,11 +1,5 @@
 package gox
 
-import (
-	"reflect"
-)
-
-var nodeType = reflect.TypeOf(node{})
-
 func processNodes(nodes []Node) ([]node, []node) {
 	size := len(nodes)
 	attributes := make([]node, 0, size)
