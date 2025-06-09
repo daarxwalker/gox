@@ -1,8 +1,8 @@
 package gox
 
 func processNodes(nodes []Node) ([]node, []node) {
-	attributes := make([]node, 0, len(nodes))
-	children := make([]node, 0, len(nodes))
+	attributes := make([]node, 0)
+	children := make([]node, 0)
 	for _, item := range nodes {
 		if item == nil {
 			continue

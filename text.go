@@ -1,6 +1,6 @@
 package gox
 
-func Text[T any](value T) Node {
+func Text(value any) Node {
 	return node{
 		nodeType: nodeText,
 		value:    value,
