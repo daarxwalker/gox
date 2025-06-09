@@ -2,7 +2,7 @@ package gox
 
 import (
 	"testing"
-
+	
 	"github.com/stretchr/testify/assert"
 )
 
@@ -11,11 +11,11 @@ func TestUtil(t *testing.T) {
 		"get string nodes values", func(t *testing.T) {
 			v1 := "test1"
 			v2 := "test2"
-			nodes := []node{
-				Div().(node),
-				Text(v1).(node),
-				Id().(node),
-				Raw(v2).(node),
+			nodes := []*node{
+				Div().(*node),
+				Text(v1).(*node),
+				Id().(*node),
+				Raw(v2).(*node),
 			}
 			textValues := getStringNodesValues(nodes...)
 			assert.Equal(t, 2, len(textValues))

@@ -9,8 +9,8 @@ type Node interface {
 }
 
 type node struct {
-	attributes []node
-	children   []node
+	attributes []*node
+	children   []*node
 	name       string
 	value      any
 	nodeType   int
@@ -31,7 +31,7 @@ func (n node) Node() Node {
 
 func createElement(name string, nodes ...Node) Node {
 	attributes, children := processNodes(nodes)
-	return node{
+	return &node{
 		nodeType:   nodeElement,
 		name:       name,
 		attributes: attributes,
@@ -40,7 +40,7 @@ func createElement(name string, nodes ...Node) Node {
 }
 
 func createAttribute[T any](name string, value ...T) Node {
-	n := node{
+	n := &node{
 		nodeType: nodeAttribute,
 		name:     name,
 	}
@@ -64,7 +64,7 @@ func createShared(name string, nodeType int, nodes ...Node) Node {
 		}
 		values := make([]string, 0)
 		for _, item := range nodes {
-			n, ok := item.(node)
+			n, ok := item.(*node)
 			if !ok {
 				continue
 			}

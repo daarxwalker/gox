@@ -1,19 +1,19 @@
 package gox
 
-func processNodes(nodes []Node) ([]node, []node) {
-	attributes := make([]node, 0)
-	children := make([]node, 0)
+func processNodes(nodes []Node) ([]*node, []*node) {
+	attributes := make([]*node, 0)
+	children := make([]*node, 0)
 	for _, item := range nodes {
 		if item == nil {
 			continue
 		}
-		n, ok := item.(node)
+		n, ok := item.(*node)
 		if !ok {
 			componentNode := item.Node()
 			if componentNode == nil {
 				continue
 			}
-			n, ok = componentNode.(node)
+			n, ok = componentNode.(*node)
 			if !ok {
 				continue
 			}
@@ -27,7 +27,7 @@ func processNodes(nodes []Node) ([]node, []node) {
 		case nodeElement, nodeText, nodeRaw:
 			if n.name == elementHtml {
 				children = append(
-					children, node{
+					children, &node{
 						nodeType: nodeRaw,
 						value:    doctypeHtml,
 					},

@@ -1,7 +1,7 @@
 package gox
 
 func Text(value any) Node {
-	return node{
+	return &node{
 		nodeType: nodeText,
 		value:    value,
 	}

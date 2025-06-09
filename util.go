@@ -7,9 +7,9 @@ func Minify(html string) string {
 	return replacer.Replace(html)
 }
 
-func findNodeWithType(nodeType int, nodes ...Node) node {
+func findNodeWithType(nodeType int, nodes ...Node) *node {
 	for _, item := range nodes {
-		n, ok := item.(node)
+		n, ok := item.(*node)
 		if !ok {
 			continue
 		}
@@ -17,12 +17,12 @@ func findNodeWithType(nodeType int, nodes ...Node) node {
 			return n
 		}
 	}
-	return node{}
+	return &node{}
 }
 
-func findNodeWithName(name string, nodes ...Node) node {
+func findNodeWithName(name string, nodes ...Node) *node {
 	for _, item := range nodes {
-		n, ok := item.(node)
+		n, ok := item.(*node)
 		if !ok {
 			continue
 		}
@@ -30,13 +30,13 @@ func findNodeWithName(name string, nodes ...Node) node {
 			return n
 		}
 	}
-	return node{}
+	return &node{}
 }
 
 func removeNodesWithType(nodeType int, nodes ...Node) []Node {
 	result := make([]Node, 0)
 	for _, item := range nodes {
-		n, ok := item.(node)
+		n, ok := item.(*node)
 		if !ok {
 			result = append(result, item)
 			continue
@@ -52,7 +52,7 @@ func removeNodesWithType(nodeType int, nodes ...Node) []Node {
 func removeNodesWithName(name string, nodes ...Node) []Node {
 	result := make([]Node, 0)
 	for _, item := range nodes {
-		n, ok := item.(node)
+		n, ok := item.(*node)
 		if !ok {
 			result = append(result, item)
 			continue
@@ -65,7 +65,7 @@ func removeNodesWithName(name string, nodes ...Node) []Node {
 	return result
 }
 
-func getStringNodesValues(nodes ...node) []string {
+func getStringNodesValues(nodes ...*node) []string {
 	result := make([]string, 0)
 	for _, item := range nodes {
 		switch item.nodeType {

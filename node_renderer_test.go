@@ -11,7 +11,7 @@ import (
 func TestRenderNodes(t *testing.T) {
 	t.Run(
 		"render attribute without value", func(t *testing.T) {
-			checkedAttr := nodeRenderer{node{nodeType: nodeAttribute, name: attributeChecked}}
+			checkedAttr := nodeRenderer{&node{nodeType: nodeAttribute, name: attributeChecked}}
 			builder := new(strings.Builder)
 			checkedAttr.renderAttribute(builder)
 			assert.Equal(t, attributeChecked, builder.String())
@@ -20,7 +20,7 @@ func TestRenderNodes(t *testing.T) {
 	t.Run(
 		"render attribute with value", func(t *testing.T) {
 			classes := "underline hover:no-underline"
-			checkedAttr := nodeRenderer{node{nodeType: nodeAttribute, name: attributeClass, value: classes}}
+			checkedAttr := nodeRenderer{&node{nodeType: nodeAttribute, name: attributeClass, value: classes}}
 			builder := new(strings.Builder)
 			checkedAttr.renderAttribute(builder)
 			assert.Equal(t, fmt.Sprintf(`%s="%s"`, attributeClass, classes), builder.String())
@@ -29,13 +29,13 @@ func TestRenderNodes(t *testing.T) {
 	t.Run(
 		"render text", func(t *testing.T) {
 			text := "test"
-			checkedAttr := nodeRenderer{node{nodeType: nodeText, value: text}}
+			checkedAttr := nodeRenderer{&node{nodeType: nodeText, value: text}}
 			assert.Equal(t, text, checkedAttr.renderText())
 		},
 	)
 	t.Run(
 		"render non-void element", func(t *testing.T) {
-			divEl := nodeRenderer{node{nodeType: nodeElement, name: elementDiv}}
+			divEl := nodeRenderer{&node{nodeType: nodeElement, name: elementDiv}}
 			builder := new(strings.Builder)
 			divEl.renderElement(builder)
 			assert.Equal(t, "<div></div>", builder.String())
@@ -43,7 +43,7 @@ func TestRenderNodes(t *testing.T) {
 	)
 	t.Run(
 		"render void element", func(t *testing.T) {
-			inputEl := nodeRenderer{node{nodeType: nodeElement, name: elementInput}}
+			inputEl := nodeRenderer{&node{nodeType: nodeElement, name: elementInput}}
 			builder := new(strings.Builder)
 			inputEl.renderElement(builder)
 			assert.Equal(t, "<input />", builder.String())
@@ -53,10 +53,10 @@ func TestRenderNodes(t *testing.T) {
 		"render non-void element with attributes", func(t *testing.T) {
 			classes := "bg-blue-400 hover:bg-blue-600"
 			buttonEl := nodeRenderer{
-				node{
+				&node{
 					nodeType: nodeElement,
 					name:     elementButton,
-					attributes: []node{
+					attributes: []*node{
 						{nodeType: nodeAttribute, name: attributeType, value: "button"},
 						{nodeType: nodeAttribute, name: attributeClass, value: classes},
 					},
@@ -70,14 +70,14 @@ func TestRenderNodes(t *testing.T) {
 	t.Run(
 		"render non-void element with children", func(t *testing.T) {
 			divEl := nodeRenderer{
-				node{
+				&node{
 					nodeType: nodeElement,
 					name:     elementDiv,
-					children: []node{
+					children: []*node{
 						{
 							nodeType: nodeElement,
 							name:     elementButton,
-							children: []node{
+							children: []*node{
 								{nodeType: nodeText, value: "test"},
 							},
 						},
@@ -93,20 +93,20 @@ func TestRenderNodes(t *testing.T) {
 		"render non-void element with attributes and children", func(t *testing.T) {
 			classes := "bg-blue-400 hover:bg-blue-600"
 			divEl := nodeRenderer{
-				node{
+				&node{
 					nodeType: nodeElement,
 					name:     elementDiv,
-					attributes: []node{
+					attributes: []*node{
 						{nodeType: nodeAttribute, name: attributeClass, value: classes},
 					},
-					children: []node{
+					children: []*node{
 						{
 							nodeType: nodeElement,
 							name:     elementButton,
-							attributes: []node{
+							attributes: []*node{
 								{nodeType: nodeAttribute, name: attributeType, value: "button"},
 							},
-							children: []node{
+							children: []*node{
 								{nodeType: nodeText, value: "test"},
 							},
 						},

@@ -10,7 +10,7 @@ func Raw(html ...string) Node {
 	for _, h := range html {
 		builder.WriteString(h)
 	}
-	return node{
+	return &node{
 		nodeType: nodeRaw,
 		value:    builder.String(),
 	}

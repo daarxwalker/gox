@@ -7,7 +7,7 @@ import (
 )
 
 type nodeRenderer struct {
-	node
+	*node
 }
 
 const (

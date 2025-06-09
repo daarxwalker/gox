@@ -5,7 +5,7 @@ import "io"
 func Render(nodes ...Node) string {
 	attributes, children := processNodes(nodes)
 	return nodeRenderer{
-		node: node{
+		node: &node{
 			nodeType:   nodeFragment,
 			attributes: attributes,
 			children:   children,

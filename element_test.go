@@ -2,7 +2,7 @@ package gox
 
 import (
 	"testing"
-
+	
 	"github.com/stretchr/testify/assert"
 )
 
@@ -34,6 +34,24 @@ func TestRenderElements(t *testing.T) {
 				t,
 				`<!DOCTYPE html><html><head></head><body></body></html>`,
 				Render(page),
+			)
+		},
+	)
+	t.Run(
+		"render nested", func(t *testing.T) {
+			nested :=
+				Fragment(
+					Div(
+						Class("test class"),
+						Div(
+							Text("test text"),
+						),
+					),
+				)
+			assert.Equal(
+				t,
+				`<div class="test class"><div>test text</div></div>`,
+				Render(nested),
 			)
 		},
 	)
