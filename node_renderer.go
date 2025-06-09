@@ -2,10 +2,9 @@ package gox
 
 import (
 	"fmt"
-	"html"
 	"slices"
+	"strconv"
 	"strings"
-	"sync"
 )
 
 type nodeRenderer struct {
@@ -20,14 +19,14 @@ const (
 func (n nodeRenderer) render() string {
 	switch n.nodeType {
 	case nodeFragment:
-		var result string
+		builder := new(strings.Builder)
 		if len(n.attributes) > 0 {
-			result += n.renderAttributes()
+			builder.WriteString(n.renderAttributes())
 		}
 		if len(n.children) > 0 {
-			result += n.renderChildren()
+			builder.WriteString(n.renderChildren())
 		}
-		return result
+		return builder.String()
 	case nodeText:
 		return n.renderText()
 	default:
@@ -39,7 +38,7 @@ func (n nodeRenderer) renderElement() string {
 	builder := new(strings.Builder)
 	builder.WriteString("<")
 	builder.WriteString(n.name)
-	isVoid := slices.Contains(voidElements, n.name)
+	isVoid := slices.Index(voidElements, n.name) > 0
 	if len(n.attributes) > 0 {
 		builder.WriteString(" ")
 		builder.WriteString(n.renderAttributes())
@@ -77,47 +76,81 @@ func (n nodeRenderer) renderAttribute() string {
 
 func (n nodeRenderer) renderAttributes() string {
 	size := len(n.attributes)
-	var wg sync.WaitGroup
-	wg.Add(size)
-	result := make([]string, len(n.attributes))
-	for i, a := range n.attributes {
-		go func(i int, a node) {
-			defer wg.Done()
-			result[i] = nodeRenderer{a}.renderAttribute()
-		}(i, a)
+	if size == 0 {
+		return ""
 	}
-	wg.Wait()
-	return strings.Join(result, " ")
+	builder := new(strings.Builder)
+	for i, a := range n.attributes {
+		builder.WriteString(nodeRenderer{a}.renderAttribute())
+		if i < size-1 {
+			builder.WriteString(" ")
+		}
+	}
+	return builder.String()
 }
 
 func (n nodeRenderer) renderChildren() string {
-	size := len(n.children)
-	var wg sync.WaitGroup
-	wg.Add(size)
-	result := make([]string, size)
-	for i, ch := range n.children {
-		go func(i int, ch node) {
-			defer wg.Done()
-			switch ch.nodeType {
-			case nodeRaw:
-				result[i] = nodeRenderer{ch}.renderRaw()
-			case nodeElement:
-				result[i] = nodeRenderer{ch}.renderElement()
-			case nodeAttribute:
-				result[i] = nodeRenderer{ch}.renderAttribute()
-			case nodeText:
-				result[i] = nodeRenderer{ch}.renderText()
-			}
-		}(i, ch)
+	builder := new(strings.Builder)
+	for _, ch := range n.children {
+		switch ch.nodeType {
+		case nodeRaw:
+			builder.WriteString(nodeRenderer{ch}.renderRaw())
+		case nodeElement:
+			builder.WriteString(nodeRenderer{ch}.renderElement())
+		case nodeAttribute:
+			builder.WriteString(nodeRenderer{ch}.renderAttribute())
+		case nodeText:
+			builder.WriteString(nodeRenderer{ch}.renderText())
+		}
 	}
-	wg.Wait()
-	return strings.Join(result, "")
+	return builder.String()
 }
 
 func (n nodeRenderer) renderText() string {
-	return html.EscapeString(fmt.Sprint(n.value))
+	return n.createStringValue()
 }
 
 func (n nodeRenderer) renderRaw() string {
-	return fmt.Sprint(n.value)
+	return n.createStringValue()
+}
+
+func (n nodeRenderer) createStringValue() string {
+	switch v := n.value.(type) {
+	case string:
+		return v
+	case fmt.Stringer:
+		return v.String()
+	case int:
+		return strconv.Itoa(v)
+	case int8:
+		return strconv.FormatInt(int64(v), 10)
+	case int16:
+		return strconv.FormatInt(int64(v), 10)
+	case int32:
+		return strconv.FormatInt(int64(v), 10)
+	case int64:
+		return strconv.FormatInt(v, 10)
+	case uint:
+		return strconv.FormatUint(uint64(v), 10)
+	case uint8:
+		return strconv.FormatUint(uint64(v), 10)
+	case uint16:
+		return strconv.FormatUint(uint64(v), 10)
+	case uint32:
+		return strconv.FormatUint(uint64(v), 10)
+	case uint64:
+		return strconv.FormatUint(v, 10)
+	case float32:
+		return strconv.FormatFloat(float64(v), 'g', -1, 32)
+	case float64:
+		return strconv.FormatFloat(v, 'g', -1, 64)
+	case bool:
+		return strconv.FormatBool(v)
+	case []byte:
+		return string(v)
+	case error:
+		return v.Error()
+	default:
+		return fmt.Sprint(v)
+	}
 }

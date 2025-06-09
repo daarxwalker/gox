@@ -2,7 +2,7 @@ package gox
 
 import (
 	"testing"
-
+	
 	"github.com/stretchr/testify/assert"
 )
 
@@ -25,4 +25,21 @@ func TestProcessor(t *testing.T) {
 			assert.Equal(t, 5, len(children))
 		},
 	)
+}
+
+func BenchmarkProcessor(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		nodes := []Node{
+			Div(),
+			Class("test"),
+			Style(Text("test")),
+			Text("test"),
+			Fragment(
+				H1(Text("test")),
+				H2(Text("test")),
+				H3(Text("test")),
+			),
+		}
+		processNodes(nodes)
+	}
 }
