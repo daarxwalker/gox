@@ -2,7 +2,6 @@ package gox
 
 import (
 	"fmt"
-	"slices"
 	"strconv"
 	"strings"
 )
@@ -17,31 +16,32 @@ const (
 )
 
 func (n nodeRenderer) render() string {
+	builder := new(strings.Builder)
 	switch n.nodeType {
 	case nodeFragment:
-		builder := new(strings.Builder)
 		if len(n.attributes) > 0 {
-			builder.WriteString(n.renderAttributes())
+			n.renderAttributes(builder)
 		}
 		if len(n.children) > 0 {
-			builder.WriteString(n.renderChildren())
+			n.renderChildren(builder)
 		}
-		return builder.String()
+	case nodeAttribute:
+		n.renderAttribute(builder)
 	case nodeText:
-		return n.renderText()
+		builder.WriteString(n.renderText())
 	default:
-		return n.renderElement()
+		n.renderElement(builder)
 	}
+	return builder.String()
 }
 
-func (n nodeRenderer) renderElement() string {
-	builder := new(strings.Builder)
+func (n nodeRenderer) renderElement(builder *strings.Builder) {
 	builder.WriteString("<")
 	builder.WriteString(n.name)
-	isVoid := slices.Index(voidElements, n.name) > 0
+	_, isVoid := voidElementsMap[n.name]
 	if len(n.attributes) > 0 {
 		builder.WriteString(" ")
-		builder.WriteString(n.renderAttributes())
+		n.renderAttributes(builder)
 	}
 	if isVoid {
 		builder.WriteString(" />")
@@ -49,21 +49,20 @@ func (n nodeRenderer) renderElement() string {
 	if !isVoid {
 		builder.WriteString(">")
 		if len(n.children) > 0 {
-			builder.WriteString(n.renderChildren())
+			n.renderChildren(builder)
 		}
 		builder.WriteString("</")
 		builder.WriteString(n.name)
 		builder.WriteString(">")
 	}
-	return builder.String()
 }
 
-func (n nodeRenderer) renderAttribute() string {
+func (n nodeRenderer) renderAttribute(builder *strings.Builder) {
 	if n.value == nil {
-		return n.name
+		builder.WriteString(n.name)
+		return
 	}
-	builder := new(strings.Builder)
-	value := fmt.Sprint(n.value)
+	value := n.createStringValue()
 	if strings.HasPrefix(value, openBracket) && strings.HasSuffix(value, closeBracket) {
 		value = strings.ReplaceAll(value, `"`, `'`)
 	}
@@ -71,39 +70,34 @@ func (n nodeRenderer) renderAttribute() string {
 	builder.WriteString(`="`)
 	builder.WriteString(value)
 	builder.WriteString(`"`)
-	return builder.String()
 }
 
-func (n nodeRenderer) renderAttributes() string {
+func (n nodeRenderer) renderAttributes(builder *strings.Builder) {
 	size := len(n.attributes)
 	if size == 0 {
-		return ""
+		return
 	}
-	builder := new(strings.Builder)
 	for i, a := range n.attributes {
-		builder.WriteString(nodeRenderer{a}.renderAttribute())
+		nodeRenderer{a}.renderAttribute(builder)
 		if i < size-1 {
 			builder.WriteString(" ")
 		}
 	}
-	return builder.String()
 }
 
-func (n nodeRenderer) renderChildren() string {
-	builder := new(strings.Builder)
+func (n nodeRenderer) renderChildren(builder *strings.Builder) {
 	for _, ch := range n.children {
 		switch ch.nodeType {
 		case nodeRaw:
 			builder.WriteString(nodeRenderer{ch}.renderRaw())
 		case nodeElement:
-			builder.WriteString(nodeRenderer{ch}.renderElement())
+			nodeRenderer{ch}.renderElement(builder)
 		case nodeAttribute:
-			builder.WriteString(nodeRenderer{ch}.renderAttribute())
+			nodeRenderer{ch}.renderAttribute(builder)
 		case nodeText:
 			builder.WriteString(nodeRenderer{ch}.renderText())
 		}
 	}
-	return builder.String()
 }
 
 func (n nodeRenderer) renderText() string {

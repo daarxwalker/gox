@@ -30,14 +30,12 @@ func TestProcessor(t *testing.T) {
 func BenchmarkProcessor(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		nodes := []Node{
-			Div(),
-			Class("test"),
-			Style(Text("test")),
-			Text("test"),
-			Fragment(
-				H1(Text("test")),
-				H2(Text("test")),
-				H3(Text("test")),
+			Div(
+				Div(Text("Div 1")),
+				Div(Text("Div 2")),
+				Div(Text("Div 3")),
+				Div(Text("Div 4")),
+				Div(Text("Div 5")),
 			),
 		}
 		processNodes(nodes)

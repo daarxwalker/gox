@@ -1,9 +1,8 @@
 package gox
 
 func processNodes(nodes []Node) ([]node, []node) {
-	size := len(nodes)
-	attributes := make([]node, 0, size)
-	children := make([]node, 0, size)
+	attributes := make([]node, 0, len(nodes))
+	children := make([]node, 0, len(nodes))
 	for _, item := range nodes {
 		if item == nil {
 			continue
@@ -21,12 +20,8 @@ func processNodes(nodes []Node) ([]node, []node) {
 		}
 		switch n.nodeType {
 		case nodeFragment:
-			for _, an := range n.attributes {
-				attributes = append(attributes, an)
-			}
-			for _, chn := range n.children {
-				children = append(children, chn)
-			}
+			attributes = append(attributes, n.attributes...)
+			children = append(children, n.children...)
 		case nodeAttribute:
 			attributes = append(attributes, n)
 		case nodeElement, nodeText, nodeRaw:

@@ -2,8 +2,9 @@ package gox
 
 import (
 	"fmt"
+	"strings"
 	"testing"
-
+	
 	"github.com/stretchr/testify/assert"
 )
 
@@ -11,14 +12,18 @@ func TestRenderNodes(t *testing.T) {
 	t.Run(
 		"render attribute without value", func(t *testing.T) {
 			checkedAttr := nodeRenderer{node{nodeType: nodeAttribute, name: attributeChecked}}
-			assert.Equal(t, attributeChecked, checkedAttr.renderAttribute())
+			builder := new(strings.Builder)
+			checkedAttr.renderAttribute(builder)
+			assert.Equal(t, attributeChecked, builder.String())
 		},
 	)
 	t.Run(
 		"render attribute with value", func(t *testing.T) {
 			classes := "underline hover:no-underline"
 			checkedAttr := nodeRenderer{node{nodeType: nodeAttribute, name: attributeClass, value: classes}}
-			assert.Equal(t, fmt.Sprintf(`%s="%s"`, attributeClass, classes), checkedAttr.renderAttribute())
+			builder := new(strings.Builder)
+			checkedAttr.renderAttribute(builder)
+			assert.Equal(t, fmt.Sprintf(`%s="%s"`, attributeClass, classes), builder.String())
 		},
 	)
 	t.Run(
@@ -31,13 +36,17 @@ func TestRenderNodes(t *testing.T) {
 	t.Run(
 		"render non-void element", func(t *testing.T) {
 			divEl := nodeRenderer{node{nodeType: nodeElement, name: elementDiv}}
-			assert.Equal(t, "<div></div>", divEl.renderElement())
+			builder := new(strings.Builder)
+			divEl.renderElement(builder)
+			assert.Equal(t, "<div></div>", builder.String())
 		},
 	)
 	t.Run(
 		"render void element", func(t *testing.T) {
 			inputEl := nodeRenderer{node{nodeType: nodeElement, name: elementInput}}
-			assert.Equal(t, "<input />", inputEl.renderElement())
+			builder := new(strings.Builder)
+			inputEl.renderElement(builder)
+			assert.Equal(t, "<input />", builder.String())
 		},
 	)
 	t.Run(
@@ -53,7 +62,9 @@ func TestRenderNodes(t *testing.T) {
 					},
 				},
 			}
-			assert.Equal(t, fmt.Sprintf(`<button type="button" class="%s"></button>`, classes), buttonEl.renderElement())
+			builder := new(strings.Builder)
+			buttonEl.renderElement(builder)
+			assert.Equal(t, fmt.Sprintf(`<button type="button" class="%s"></button>`, classes), builder.String())
 		},
 	)
 	t.Run(
@@ -73,7 +84,9 @@ func TestRenderNodes(t *testing.T) {
 					},
 				},
 			}
-			assert.Equal(t, "<div><button>test</button></div>", divEl.renderElement())
+			builder := new(strings.Builder)
+			divEl.renderElement(builder)
+			assert.Equal(t, "<div><button>test</button></div>", builder.String())
 		},
 	)
 	t.Run(
@@ -100,10 +113,13 @@ func TestRenderNodes(t *testing.T) {
 					},
 				},
 			}
+			
+			builder := new(strings.Builder)
+			divEl.renderElement(builder)
 			assert.Equal(
 				t,
 				fmt.Sprintf(`<div class="%s"><button type="button">test</button></div>`, classes),
-				divEl.renderElement(),
+				builder.String(),
 			)
 		},
 	)

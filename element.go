@@ -116,9 +116,10 @@ const (
 )
 
 var (
-	voidElements = []string{
-		elementArea, elementBase, elementBr, elementCol, elementEmbed, elementHr, elementImg, elementInput, elementLink,
-		elementMeta, elementParam, elementSource, elementTrack, elementWbr, sharedPath,
+	voidElementsMap = map[string]struct{}{
+		elementArea: {}, elementBase: {}, elementBr: {}, elementCol: {}, elementEmbed: {}, elementHr: {}, elementImg: {},
+		elementInput: {}, elementLink: {}, elementMeta: {}, elementParam: {}, elementSource: {}, elementTrack: {},
+		elementWbr: {}, sharedPath: {},
 	}
 )
 

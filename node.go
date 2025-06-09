@@ -9,11 +9,11 @@ type Node interface {
 }
 
 type node struct {
-	nodeType   int
-	name       string
-	value      any
 	attributes []node
 	children   []node
+	name       string
+	value      any
+	nodeType   int
 }
 
 const (
