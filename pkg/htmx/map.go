@@ -1,4 +1,4 @@
-package datastar
+package htmx
 
 import (
 	"github.com/daarxwalker/gox/internal"

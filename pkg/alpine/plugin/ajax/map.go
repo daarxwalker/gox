@@ -1,4 +1,4 @@
-package datastar
+package ajax
 
 import (
 	"github.com/daarxwalker/gox/internal"
