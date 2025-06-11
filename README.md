@@ -187,6 +187,29 @@ Range(someSlice, func(item int, _ int) Node {
   return Div(Text(item))
 })
 ```
+#### MapRange
+```go
+someMap := map[string]string{"key1": "value1", "key2": "value2"}
+
+MapRange(data, func(k, v string) Node {
+  return Span(Text(fmt.Sprintf("%s:%s", k, v)))
+})
+```
+#### IfZone
+```go
+IfZone(someCondition, func() Node {
+  return Div(Text("example"))
+})
+```
+#### Zone
+```go
+Zone(func() Node {
+  if someCondition {
+    return Fragment()
+  }
+  return Div(Text("example"))
+})
+```
 <br>
 
 ### Factories

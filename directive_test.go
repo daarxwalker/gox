@@ -23,6 +23,22 @@ func TestDirectiveRange(t *testing.T) {
 	)
 }
 
+func TestDirectiveMapRange(t *testing.T) {
+	data := map[string]string{"key1": "value1", "key2": "value2"}
+	t.Run(
+		"range", func(t *testing.T) {
+			bodyEl := Body(
+				MapRange(
+					data, func(k, v string) Node {
+						return Span(Text(fmt.Sprintf("%s:%s", k, v)))
+					},
+				),
+			)
+			assert.Equal(t, "<body><span>key1:value1</span><span>key2:value2</span></body>", Render(bodyEl))
+		},
+	)
+}
+
 func TestDirectiveIf(t *testing.T) {
 	t.Run(
 		"if", func(t *testing.T) {
